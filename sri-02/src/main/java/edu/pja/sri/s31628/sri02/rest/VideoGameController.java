@@ -1,0 +1,91 @@
+package edu.pja.sri.s31628.sri02.rest;
+
+
+import edu.pja.sri.s31628.sri02.dto.VideoGameDto;
+import edu.pja.sri.s31628.sri02.model.VideoGame;
+import edu.pja.sri.s31628.sri02.repo.VideoGameRepository;
+import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+@RestController
+@RequestMapping("/api/videoGames")
+public class VideoGameController {
+    private VideoGameRepository videoGameRepository;
+    private ModelMapper modelMapper;
+
+    public VideoGameController(VideoGameRepository videoGameRepository, ModelMapper modelMapper) {
+        this.videoGameRepository= videoGameRepository;
+        this.modelMapper = modelMapper;
+    }
+
+    private VideoGameDto convertToDto(VideoGame v) {
+        return modelMapper.map(v, VideoGameDto.class);
+    }
+
+    private VideoGame convertToEntity(VideoGameDto dto) {
+        return modelMapper.map(dto, VideoGame.class);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<VideoGameDto>> getVideoGames() {
+        List<VideoGame> videoGames = videoGameRepository.findAll();
+        List<VideoGameDto> result = videoGames.stream().map(this::convertToDto).collect(Collectors.toList());
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("{gameId}")
+    public ResponseEntity<VideoGameDto> getVideoGameById(@PathVariable long gameId) {
+        Optional<VideoGame> game = videoGameRepository.findById(gameId);
+        if (game.isPresent()) {
+            VideoGameDto videoGameDto = convertToDto(game.get());
+            return new ResponseEntity<>(videoGameDto, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping
+    public ResponseEntity saveNewVideoGame(@RequestBody VideoGameDto videoGameDto) {
+        VideoGame entity = convertToEntity(videoGameDto);
+        videoGameRepository.save(entity);
+        HttpHeaders responseHeaders = new HttpHeaders();
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(entity.getId()).toUri();
+        responseHeaders.add("Location", location.toString());
+        return new ResponseEntity<>(responseHeaders, HttpStatus.CREATED);
+    }
+
+    @PutMapping("{gameId}")
+    public ResponseEntity updateVideoGame(@PathVariable Long gameId, @RequestBody VideoGameDto videoGameDto){
+        Optional<VideoGame> game = videoGameRepository.findById(gameId);
+        if (game.isPresent()) {
+            videoGameDto.setId(gameId);
+            VideoGame videoGame = convertToEntity(videoGameDto);
+            videoGameRepository.save(videoGame);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @DeleteMapping("{gameId}")
+    public ResponseEntity deleteVideoGame(@PathVariable Long gameId) {
+        boolean found = videoGameRepository.existsById(gameId);
+        if (found) {
+            videoGameRepository.deleteById(gameId);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+}
