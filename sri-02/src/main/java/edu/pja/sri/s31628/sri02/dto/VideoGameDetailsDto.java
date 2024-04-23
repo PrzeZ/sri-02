@@ -7,13 +7,14 @@ import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class VideoGameDto {
+public class VideoGameDetailsDto {
     private Long id;
     private String title;
-
+    private Set<DeveloperDto> developers;
     private int releaseYear;
 }

@@ -13,6 +13,6 @@ import java.util.Optional;
 public interface VideoGameRepository extends CrudRepository<VideoGame, Long> {
     List<VideoGame> findAll();
 
-    @Query("from VideoGame as game left join fetch game.developers where game.id=:videoGameId")
-    Optional<VideoGame> getVideoGameDetailsById(@Param("videoGameId") Long videoGameId);
+//    @Query("from VideoGame as game left join fetch game.developers where game.id=:videoGameId")
+//    Optional<VideoGame> getVideoGameDetailsById(@Param("videoGameId") Long videoGameId);
 }

@@ -4,9 +4,10 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -19,8 +20,9 @@ public class VideoGame {
 
     private String title;
 
-    @ManyToMany
-    private List<Developer> developers = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name="developerId")
+    private Developer developer;
 
     private int releaseYear;
 
