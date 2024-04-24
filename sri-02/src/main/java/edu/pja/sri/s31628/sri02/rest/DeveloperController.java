@@ -24,28 +24,15 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class DeveloperController {
 
-    private DeveloperDtoMapper developerDtoMaper;
+    private DeveloperDtoMapper developerDtoMapper;
     private VideoGameRepository videoGameRepository;
     private DeveloperRepository DeveloperRepository;
     private ModelMapper modelMapper;
 
     public ResponseEntity<Collection<DeveloperDto>> getAllDevelopers() {
         List<Developer> developers = DeveloperRepository.findAll();
-        List<DeveloperDto> result = developers.stream().map(this::convertToDto).collect(Collectors.toList());
+        List<DeveloperDto> result = developers.stream().map(developerDtoMapper::convertToDto).collect(Collectors.toList());
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
-
-    public DeveloperDetailsDto convertToDetailsDto(Developer dev) {
-        return modelMapper.map(dev, DeveloperDetailsDto.class);
-    }
-
-    public DeveloperDto convertToDto(Developer dev) {
-        return modelMapper.map(dev, DeveloperDto.class);
-    }
-
-    private Developer convertToEntity(DeveloperDto dto) {
-        return modelMapper.map(dto, Developer.class);
-    }
-
 
 }
