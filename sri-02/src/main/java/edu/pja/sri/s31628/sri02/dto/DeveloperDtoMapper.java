@@ -17,7 +17,7 @@ public class DeveloperDtoMapper {
         return modelMapper.map(dev, DeveloperDto.class);
     }
 
-    private Developer convertToEntity(DeveloperDto dto) {
+    public Developer convertToEntity(DeveloperDto dto) {
         return modelMapper.map(dto, Developer.class);
     }
 }
