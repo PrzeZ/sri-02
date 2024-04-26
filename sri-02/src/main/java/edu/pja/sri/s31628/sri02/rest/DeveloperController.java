@@ -41,11 +41,11 @@ public class DeveloperController {
     }
 
     @GetMapping("{developerId}")
-    public ResponseEntity<DeveloperDto> getDeveloperById(@PathVariable long developerId) {
+    public ResponseEntity<DeveloperDetailsDto> getDeveloperById(@PathVariable long developerId) {
         Optional<Developer> dev = DeveloperRepository.findById(developerId);
         if (dev.isPresent()) {
-            DeveloperDto developerDto = developerDtoMapper.convertToDto(dev.get());
-            return new ResponseEntity<>(developerDto, HttpStatus.OK);
+            DeveloperDetailsDto developerDetailsDto = developerDtoMapper.convertToDetailsDto(dev.get());
+            return new ResponseEntity<>(developerDetailsDto, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
