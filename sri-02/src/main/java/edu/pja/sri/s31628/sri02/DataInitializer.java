@@ -23,10 +23,17 @@ public class DataInitializer implements ApplicationRunner {
                 .title("Undertale")
                 .releaseYear(2015)
                 .build();
+
         VideoGame g2 = VideoGame.builder()
                 .title("Wiedźmin 3")
                 .releaseYear(2015)
                 .build();
+
+        VideoGame g3 = VideoGame.builder()
+                .title("TES:V Skyrim")
+                .releaseYear(2015)
+                .build();
+
         Developer d1 = Developer.builder()
                 .name("Toby Fox")
                 .description("Guy that made undertale")
@@ -37,12 +44,21 @@ public class DataInitializer implements ApplicationRunner {
                 .description("Polish game dev studio in Warsaw")
                 .build();
 
+        Developer d3 = Developer.builder()
+                .name("Bethesda")
+                .description("")
+                .build();
+
+
         g1.setDeveloper(d1);
         g2.setDeveloper(d2);
+        g2.setDeveloper(d3);
 
         developerRepository.save(d1);
         developerRepository.save(d2);
+        developerRepository.save(d3);
         videoGameRepository.save(g1);
         videoGameRepository.save(g2);
+        videoGameRepository.save(g3);
     }
 }
