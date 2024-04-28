@@ -51,38 +51,38 @@ public class DeveloperController {
         }
     }
 
-    @PostMapping
-    public ResponseEntity saveNewDeveloper(@RequestBody DeveloperDto developerDto) {
-        Developer entity = developerDtoMapper.convertToEntity(developerDto);
-        DeveloperRepository.save(entity);
-        HttpHeaders responseHeaders = new HttpHeaders();
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(entity.getId()).toUri();
-        responseHeaders.add("Location", location.toString());
-        return new ResponseEntity<>(responseHeaders, HttpStatus.CREATED);
-    }
-
-    @PutMapping("{developerId}")
-    public ResponseEntity updateDeveloper(@PathVariable Long developerId, @RequestBody DeveloperDto developerDto){
-        Optional<Developer> dev = developerRepository.findById(developerId);
-        if (dev.isPresent()) {
-            developerDto.setId(developerId);
-            Developer developer = developerDtoMapper.convertToEntity(developerDto);
-           DeveloperRepository.save(developer);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
-    @DeleteMapping("{developerId}")
-    public ResponseEntity deleteDeveloper(@PathVariable Long developerId) {
-        boolean found = developerRepository.existsById(developerId);
-        if (found) {
-            developerRepository.deleteById(developerId);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
+//    @PostMapping
+//    public ResponseEntity saveNewDeveloper(@RequestBody DeveloperDto developerDto) {
+//        Developer entity = developerDtoMapper.convertToEntity(developerDto);
+//        DeveloperRepository.save(entity);
+//        HttpHeaders responseHeaders = new HttpHeaders();
+//        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(entity.getId()).toUri();
+//        responseHeaders.add("Location", location.toString());
+//        return new ResponseEntity<>(responseHeaders, HttpStatus.CREATED);
+//    }
+//
+//    @PutMapping("{developerId}")
+//    public ResponseEntity updateDeveloper(@PathVariable Long developerId, @RequestBody DeveloperDto developerDto){
+//        Optional<Developer> dev = developerRepository.findById(developerId);
+//        if (dev.isPresent()) {
+//            developerDto.setId(developerId);
+//            Developer developer = developerDtoMapper.convertToEntity(developerDto);
+//           DeveloperRepository.save(developer);
+//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//        } else {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//    }
+//
+//    @DeleteMapping("{developerId}")
+//    public ResponseEntity deleteDeveloper(@PathVariable Long developerId) {
+//        boolean found = developerRepository.existsById(developerId);
+//        if (found) {
+//            developerRepository.deleteById(developerId);
+//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//        } else {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//    }
 
 }
