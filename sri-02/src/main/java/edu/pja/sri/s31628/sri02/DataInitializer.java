@@ -8,6 +8,8 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
+import java.util.HashSet;
+
 @Component
 public class DataInitializer implements ApplicationRunner {
 
@@ -37,28 +39,22 @@ public class DataInitializer implements ApplicationRunner {
         Developer d1 = Developer.builder()
                 .name("Toby Fox")
                 .description("Guy that made undertale")
+                .videoGames(new HashSet<>())
                 .build();
 
         Developer d2 = Developer.builder()
                 .name("CD Projekt Red")
                 .description("Polish game dev studio in Warsaw")
+                .videoGames(new HashSet<>())
                 .build();
 
         Developer d3 = Developer.builder()
                 .name("Bethesda")
                 .description("")
+                .videoGames(new HashSet<>())
                 .build();
 
-
-        g1.setDeveloper(d1);
-        g2.setDeveloper(d2);
-        g2.setDeveloper(d3);
-
-        developerRepository.save(d1);
-        developerRepository.save(d2);
-        developerRepository.save(d3);
-        videoGameRepository.save(g1);
-        videoGameRepository.save(g2);
-        videoGameRepository.save(g3);
+        d1.getVideoGames().add(g1); // Manage both sides of the relationship
+        developerRepository.save(d1); // Saves d1 and cascades to g1
     }
 }

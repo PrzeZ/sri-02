@@ -16,10 +16,12 @@ public class Developer {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToMany
+    private String name;
+    private String description;
+
+    @OneToMany(mappedBy = "developer")
     @ToString.Exclude
     private Set<VideoGame> videoGames = new HashSet<>();
 
-    private String name;
-    private String description;
+
 }

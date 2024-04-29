@@ -13,7 +13,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class DeveloperDto {
     private Long id;
-    private Set<VideoGame> videoGames = new HashSet<>();
+
     private String name;
     private String description;
 }

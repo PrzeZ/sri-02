@@ -12,6 +12,6 @@ import java.util.Set;
 public class VideoGameDetailsDto {
     private Long id;
     private String title;
-    private Set<DeveloperDto> developers;
+   // private Set<DeveloperDto> developers;
     private int releaseYear;
 }

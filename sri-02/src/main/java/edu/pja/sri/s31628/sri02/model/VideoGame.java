@@ -19,7 +19,7 @@ public class VideoGame {
     private String title;
 
     @ManyToOne
-    @JoinColumn(name="developerId")
+    @JoinColumn(name="developer_id")
     private Developer developer;
 
     private int releaseYear;
