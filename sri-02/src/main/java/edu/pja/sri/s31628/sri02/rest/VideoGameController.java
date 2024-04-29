@@ -4,6 +4,7 @@ package edu.pja.sri.s31628.sri02.rest;
 import edu.pja.sri.s31628.sri02.dto.VideoGameDto;
 import edu.pja.sri.s31628.sri02.model.VideoGame;
 import edu.pja.sri.s31628.sri02.repo.VideoGameRepository;
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -55,7 +56,7 @@ public class VideoGameController {
     }
 
     @PostMapping
-    public ResponseEntity saveNewVideoGame(@RequestBody VideoGameDto videoGameDto) {
+    public ResponseEntity saveNewVideoGame(@Valid @RequestBody VideoGameDto videoGameDto) {
         VideoGame entity = convertToEntity(videoGameDto);
         videoGameRepository.save(entity);
         HttpHeaders responseHeaders = new HttpHeaders();
@@ -65,7 +66,7 @@ public class VideoGameController {
     }
 
     @PutMapping("{gameId}")
-    public ResponseEntity updateVideoGame(@PathVariable Long gameId, @RequestBody VideoGameDto videoGameDto){
+    public ResponseEntity updateVideoGame(@PathVariable Long gameId, @Valid @RequestBody VideoGameDto videoGameDto){
         Optional<VideoGame> game = videoGameRepository.findById(gameId);
         if (game.isPresent()) {
             videoGameDto.setId(gameId);

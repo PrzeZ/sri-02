@@ -1,6 +1,8 @@
 package edu.pja.sri.s31628.sri02.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.util.HashSet;
@@ -16,6 +18,8 @@ public class Developer {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotBlank
+    @Size(min = 2, max = 50)
     private String name;
     private String description;
 
