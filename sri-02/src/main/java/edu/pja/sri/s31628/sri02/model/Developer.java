@@ -21,6 +21,7 @@ public class Developer {
 
     @OneToMany(mappedBy = "developer")
     @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Set<VideoGame> videoGames = new HashSet<>();
 
 

@@ -8,6 +8,7 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
 import java.util.HashSet;
 
 @Component
@@ -54,7 +55,19 @@ public class DataInitializer implements ApplicationRunner {
                 .videoGames(new HashSet<>())
                 .build();
 
-        d1.getVideoGames().add(g1); // Manage both sides of the relationship
-        developerRepository.save(d1); // Saves d1 and cascades to g1
+
+        g1.setDeveloper(d1);
+        d1.getVideoGames().add(g1);
+
+        g2.setDeveloper(d2);
+        d2.getVideoGames().add(g2);
+
+        g3.setDeveloper(d3);
+        d3.getVideoGames().add(g3);
+
+        developerRepository.saveAll(Arrays.asList(d1,d2,d3));
+        videoGameRepository.saveAll(Arrays.asList(g1,g2,g3));
+
+
     }
 }
