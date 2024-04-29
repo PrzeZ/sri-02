@@ -13,7 +13,7 @@ public class VideoGameDto {
     private Long id;
 
     @NotBlank
-    @Size(min = 2, max = 50)
+    @Size(min = 1, max = 50)
     private String title;
 
     private int releaseYear;
