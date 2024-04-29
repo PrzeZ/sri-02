@@ -1,8 +1,6 @@
 package edu.pja.sri.s31628.sri02.dto;
 
 import edu.pja.sri.s31628.sri02.model.Developer;
-import edu.pja.sri.s31628.sri02.model.VideoGame;
-import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
