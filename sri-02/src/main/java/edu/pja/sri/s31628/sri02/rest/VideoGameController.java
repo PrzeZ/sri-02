@@ -5,6 +5,7 @@ import edu.pja.sri.s31628.sri02.dto.VideoGameDto;
 import edu.pja.sri.s31628.sri02.model.VideoGame;
 import edu.pja.sri.s31628.sri02.repo.VideoGameRepository;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,15 +20,11 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/videoGames")
 public class VideoGameController {
-    private VideoGameRepository videoGameRepository;
-    private ModelMapper modelMapper;
-
-    public VideoGameController(VideoGameRepository videoGameRepository, ModelMapper modelMapper) {
-        this.videoGameRepository= videoGameRepository;
-        this.modelMapper = modelMapper;
-    }
+    private final VideoGameRepository videoGameRepository;
+    private final ModelMapper modelMapper;
 
     private VideoGameDto convertToDto(VideoGame v) {
         return modelMapper.map(v, VideoGameDto.class);

@@ -19,8 +19,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/developers")
 @RequiredArgsConstructor
+@RequestMapping("/api/developers")
 public class DeveloperController {
 
     private final DeveloperRepository developerRepository;
