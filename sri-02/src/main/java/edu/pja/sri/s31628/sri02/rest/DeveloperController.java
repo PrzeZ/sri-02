@@ -46,7 +46,7 @@ public class DeveloperController {
         if (dev.isPresent()) {
             DeveloperDetailsDto developerDetailsDto = developerDtoMapper.convertToDetailsDto(dev.get());
 
-            Link linkSelf = linkTo(methodOn(DeveloperController.class).getDeveloperById(developerId)).withSelfRel();
+            Link linkSelf = CreateDeveloperLinkSelf(developerId);
             developerDetailsDto.add(linkSelf);
             return new ResponseEntity<>(developerDetailsDto, HttpStatus.OK);
         } else {
@@ -87,5 +87,9 @@ public class DeveloperController {
 //            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 //        }
 //    }
+
+    private Link CreateDeveloperLinkSelf(Long developerId) {
+        return linkTo(methodOn(DeveloperController.class).getDeveloperById(developerId)).withSelfRel();
+    }
 
 }
