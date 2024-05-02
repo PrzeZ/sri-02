@@ -45,6 +45,7 @@ public class VideoGameController {
     @GetMapping("{gameId}")
     public ResponseEntity<VideoGameDto> getVideoGameById(@PathVariable long gameId) {
         Optional<VideoGame> game = videoGameRepository.findById(gameId);
+
         if (game.isPresent()) {
             VideoGameDto videoGameDto = convertToDto(game.get());
             return new ResponseEntity<>(videoGameDto, HttpStatus.OK);
@@ -66,6 +67,7 @@ public class VideoGameController {
     @PutMapping("{gameId}")
     public ResponseEntity updateVideoGame(@PathVariable Long gameId, @Valid @RequestBody VideoGameDto videoGameDto){
         Optional<VideoGame> game = videoGameRepository.findById(gameId);
+
         if (game.isPresent()) {
             videoGameDto.setId(gameId);
             VideoGame videoGame = convertToEntity(videoGameDto);
@@ -79,6 +81,7 @@ public class VideoGameController {
     @DeleteMapping("{gameId}")
     public ResponseEntity deleteVideoGame(@PathVariable Long gameId) {
         boolean found = videoGameRepository.existsById(gameId);
+
         if (found) {
             videoGameRepository.deleteById(gameId);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

@@ -45,11 +45,10 @@ public class DeveloperController {
 
     @GetMapping("{developerId}")
     public ResponseEntity<DeveloperDetailsDto> getDeveloperById(@PathVariable long developerId) {
-
         Optional<Developer> dev = developerRepository.findById(developerId);
+        
         if (dev.isPresent()) {
             DeveloperDetailsDto developerDetailsDto = developerDtoMapper.convertToDetailsDto(dev.get());
-
             Link linkSelf = CreateDeveloperLinkSelf(developerId);
             developerDetailsDto.add(linkSelf);
             return new ResponseEntity<>(developerDetailsDto, HttpStatus.OK);
@@ -71,6 +70,7 @@ public class DeveloperController {
     @PutMapping("{developerId}")
     public ResponseEntity updateDeveloper(@PathVariable Long developerId, @RequestBody DeveloperDto developerDto){
         Optional<Developer> dev = developerRepository.findById(developerId);
+
         if (dev.isPresent()) {
             developerDto.setId(developerId);
             Developer developer = developerDtoMapper.convertToEntity(developerDto);
@@ -105,6 +105,7 @@ public class DeveloperController {
     @DeleteMapping("{developerId}")
     public ResponseEntity deleteDeveloper(@PathVariable Long developerId) {
         boolean found = developerRepository.existsById(developerId);
+
         if (found) {
             developerRepository.deleteById(developerId);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
