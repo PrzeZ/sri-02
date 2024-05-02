@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/videoGames")
+@RequestMapping("/api/games")
 public class VideoGameController {
     private final VideoGameRepository videoGameRepository;
     private final ModelMapper modelMapper;
