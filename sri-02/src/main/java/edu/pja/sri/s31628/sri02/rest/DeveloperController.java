@@ -4,6 +4,7 @@ import edu.pja.sri.s31628.sri02.dto.DeveloperDetailsDto;
 import edu.pja.sri.s31628.sri02.dto.DeveloperDto;
 import edu.pja.sri.s31628.sri02.dto.DeveloperDtoMapper;
 import edu.pja.sri.s31628.sri02.model.Developer;
+import edu.pja.sri.s31628.sri02.model.VideoGame;
 import edu.pja.sri.s31628.sri02.repo.DeveloperRepository;
 import edu.pja.sri.s31628.sri02.repo.VideoGameRepository;
 import lombok.RequiredArgsConstructor;
@@ -80,6 +81,27 @@ public class DeveloperController {
         }
     }
 
+    @PutMapping("/{developerId}/games/{gameId}")
+    public ResponseEntity<?> addGameToDeveloper(@PathVariable Long developerId, @PathVariable Long gameId) {
+        Optional<Developer> developerOptional = developerRepository.findById(developerId);
+        Optional<VideoGame> gameOptional = videoGameRepository.findById(gameId);
+
+        if (!developerOptional.isPresent()) {
+            return new ResponseEntity<>("Developer not found", HttpStatus.NOT_FOUND);
+        }
+        if (!gameOptional.isPresent()) {
+            return new ResponseEntity<>("Game not found", HttpStatus.NOT_FOUND);
+        }
+
+        Developer developer = developerOptional.get();
+        VideoGame game = gameOptional.get();
+
+        developer.getVideoGames().add(game);
+        developerRepository.save(developer);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
     @DeleteMapping("{developerId}")
     public ResponseEntity deleteDeveloper(@PathVariable Long developerId) {
         boolean found = developerRepository.existsById(developerId);
@@ -89,6 +111,31 @@ public class DeveloperController {
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @DeleteMapping("/{developerId}/games/{gameId}")
+    public ResponseEntity<?> removeGameFromDeveloper(@PathVariable Long developerId, @PathVariable Long gameId) {
+        Optional<Developer> developerOptional = developerRepository.findById(developerId);
+        Optional<VideoGame> gameOptional = videoGameRepository.findById(gameId);
+
+        if (!developerOptional.isPresent()) {
+            return new ResponseEntity<>("Developer not found!", HttpStatus.NOT_FOUND);
+        }
+        if (!gameOptional.isPresent()) {
+            return new ResponseEntity<>("Game not found!", HttpStatus.NOT_FOUND);
+        }
+
+        Developer developer = developerOptional.get();
+        VideoGame game = gameOptional.get();
+
+        if (!developer.getVideoGames().contains(game)) {
+            return new ResponseEntity<>("Game not found in developer!", HttpStatus.BAD_REQUEST);
+        }
+
+        developer.getVideoGames().remove(game);
+        developerRepository.save(developer);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     private Link CreateDeveloperLinkSelf(Long developerId) {
