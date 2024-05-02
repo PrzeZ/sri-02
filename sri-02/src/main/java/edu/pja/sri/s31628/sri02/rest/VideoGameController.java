@@ -39,6 +39,7 @@ public class VideoGameController {
         List<VideoGame> videoGames = videoGameRepository.findAll();
         List<VideoGameDto> result = videoGames.stream().map(this::convertToDto).collect(Collectors.toList());
         return new ResponseEntity<>(result, HttpStatus.OK);
+
     }
 
     @GetMapping("{gameId}")

@@ -9,11 +9,14 @@ import edu.pja.sri.s31628.sri02.repo.VideoGameRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.hateoas.Link;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 
+import java.net.URI;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -54,42 +57,41 @@ public class DeveloperController {
         }
     }
 
-//    @PostMapping
-//    public ResponseEntity saveNewDeveloper(@RequestBody DeveloperDto developerDto) {
-//        Developer entity = developerDtoMapper.convertToEntity(developerDto);
-//        DeveloperRepository.save(entity);
-//        HttpHeaders responseHeaders = new HttpHeaders();
-//        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(entity.getId()).toUri();
-//        responseHeaders.add("Location", location.toString());
-//        return new ResponseEntity<>(responseHeaders, HttpStatus.CREATED);
-//    }
-//
-//    @PutMapping("{developerId}")
-//    public ResponseEntity updateDeveloper(@PathVariable Long developerId, @RequestBody DeveloperDto developerDto){
-//        Optional<Developer> dev = developerRepository.findById(developerId);
-//        if (dev.isPresent()) {
-//            developerDto.setId(developerId);
-//            Developer developer = developerDtoMapper.convertToEntity(developerDto);
-//           DeveloperRepository.save(developer);
-//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//        } else {
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
-//    }
-//
-//    @DeleteMapping("{developerId}")
-//    public ResponseEntity deleteDeveloper(@PathVariable Long developerId) {
-//        boolean found = developerRepository.existsById(developerId);
-//        if (found) {
-//            developerRepository.deleteById(developerId);
-//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//        } else {
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
-//    }
+    @PostMapping
+    public ResponseEntity saveNewDeveloper(@RequestBody DeveloperDto developerDto) {
+        Developer entity = developerDtoMapper.convertToEntity(developerDto);
+        developerRepository.save(entity);
+        HttpHeaders responseHeaders = new HttpHeaders();
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(entity.getId()).toUri();
+        responseHeaders.add("Location", location.toString());
+        return new ResponseEntity<>(responseHeaders, HttpStatus.CREATED);
+    }
+
+    @PutMapping("{developerId}")
+    public ResponseEntity updateDeveloper(@PathVariable Long developerId, @RequestBody DeveloperDto developerDto){
+        Optional<Developer> dev = developerRepository.findById(developerId);
+        if (dev.isPresent()) {
+            developerDto.setId(developerId);
+            Developer developer = developerDtoMapper.convertToEntity(developerDto);
+           developerRepository.save(developer);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @DeleteMapping("{developerId}")
+    public ResponseEntity deleteDeveloper(@PathVariable Long developerId) {
+        boolean found = developerRepository.existsById(developerId);
+        if (found) {
+            developerRepository.deleteById(developerId);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
     private Link CreateDeveloperLinkSelf(Long developerId) {
         return linkTo(methodOn(DeveloperController.class).getDeveloperById(developerId)).withSelfRel();
     }
-
 }
