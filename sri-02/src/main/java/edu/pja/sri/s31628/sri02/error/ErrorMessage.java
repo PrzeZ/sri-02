@@ -1,4 +1,4 @@
-package edu.pja.sri.s31628.sri02;
+package edu.pja.sri.s31628.sri02.error;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;

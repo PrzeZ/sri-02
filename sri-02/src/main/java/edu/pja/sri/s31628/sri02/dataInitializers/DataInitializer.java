@@ -1,4 +1,4 @@
-package edu.pja.sri.s31628.sri02;
+package edu.pja.sri.s31628.sri02.dataInitializers;
 
 import edu.pja.sri.s31628.sri02.model.Developer;
 import edu.pja.sri.s31628.sri02.model.VideoGame;
