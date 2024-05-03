@@ -11,6 +11,7 @@ import org.springframework.hateoas.Link;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -99,7 +100,7 @@ public class DeveloperController {
         if (dev.isPresent()) {
             developerDto.setId(developerId);
             Developer developer = developerDtoMapper.convertToEntity(developerDto);
-           developerRepository.save(developer);
+            developerRepository.save(developer);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -121,7 +122,10 @@ public class DeveloperController {
         Developer developer = developerOptional.get();
         VideoGame game = gameOptional.get();
 
+        game.setDeveloper(developer);
         developer.getVideoGames().add(game);
+
+        videoGameRepository.save(game);
         developerRepository.save(developer);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -158,7 +162,10 @@ public class DeveloperController {
             return new ResponseEntity<>("Game not found in developer!", HttpStatus.BAD_REQUEST);
         }
 
+        game.setDeveloper(null);
         developer.getVideoGames().remove(game);
+
+        videoGameRepository.save(game);
         developerRepository.save(developer);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
