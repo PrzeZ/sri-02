@@ -1,8 +1,6 @@
 package edu.pja.sri.s31628.sri02.rest;
 
-import edu.pja.sri.s31628.sri02.dto.DeveloperDetailsDto;
-import edu.pja.sri.s31628.sri02.dto.DeveloperDto;
-import edu.pja.sri.s31628.sri02.dto.DeveloperDtoMapper;
+import edu.pja.sri.s31628.sri02.dto.*;
 import edu.pja.sri.s31628.sri02.model.Developer;
 import edu.pja.sri.s31628.sri02.model.VideoGame;
 import edu.pja.sri.s31628.sri02.repo.DeveloperRepository;
@@ -35,6 +33,7 @@ public class DeveloperController {
     private final DeveloperDtoMapper developerDtoMapper;
     private final VideoGameRepository videoGameRepository;
     private final ModelMapper modelMapper;
+    private final VideoGameDtoMapper videoGameDtoMapper;
 
 
     @GetMapping
@@ -63,7 +62,7 @@ public class DeveloperController {
     }
 
     @GetMapping("/{developerId}/games")
-    public ResponseEntity<List<VideoGame>> getDeveloperGamesById(@PathVariable Long developerId) {
+    public ResponseEntity<List<VideoGameDto>> getDeveloperGamesById(@PathVariable Long developerId) {
         Optional<Developer> developerOptional = developerRepository.findById(developerId);
 
         if (!developerOptional.isPresent()) {
@@ -77,7 +76,11 @@ public class DeveloperController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT); // Returns 204 if no games are associated with the developer
         }
 
-        return new ResponseEntity<>(games, HttpStatus.OK); // Returns 200 with the games
+        List<VideoGameDto> gamesDto = games.stream()
+                .map(videoGameDtoMapper::convertToDto)
+                .collect(Collectors.toList());
+
+        return new ResponseEntity<>(gamesDto, HttpStatus.OK); // Returns 200 with the games
     }
 
     @PostMapping

@@ -3,10 +3,7 @@ package edu.pja.sri.s31628.sri02.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Data
@@ -24,6 +21,8 @@ public class VideoGame {
 
     @ManyToOne
     @JoinColumn(name="developer_id")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Developer developer;
 
     private int releaseYear;

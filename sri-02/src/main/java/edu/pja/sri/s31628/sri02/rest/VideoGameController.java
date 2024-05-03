@@ -2,6 +2,7 @@ package edu.pja.sri.s31628.sri02.rest;
 
 
 import edu.pja.sri.s31628.sri02.dto.VideoGameDto;
+import edu.pja.sri.s31628.sri02.dto.VideoGameDtoMapper;
 import edu.pja.sri.s31628.sri02.model.VideoGame;
 import edu.pja.sri.s31628.sri02.repo.VideoGameRepository;
 import jakarta.validation.Valid;
@@ -25,19 +26,12 @@ import java.util.stream.Collectors;
 public class VideoGameController {
     private final VideoGameRepository videoGameRepository;
     private final ModelMapper modelMapper;
-
-    private VideoGameDto convertToDto(VideoGame v) {
-        return modelMapper.map(v, VideoGameDto.class);
-    }
-
-    private VideoGame convertToEntity(VideoGameDto dto) {
-        return modelMapper.map(dto, VideoGame.class);
-    }
+    private final VideoGameDtoMapper videoGameDtoMapper;
 
     @GetMapping
     public ResponseEntity<List<VideoGameDto>> getVideoGames() {
         List<VideoGame> videoGames = videoGameRepository.findAll();
-        List<VideoGameDto> result = videoGames.stream().map(this::convertToDto).collect(Collectors.toList());
+        List<VideoGameDto> result = videoGames.stream().map(videoGameDtoMapper::convertToDto).collect(Collectors.toList());
         return new ResponseEntity<>(result, HttpStatus.OK);
 
     }
@@ -47,7 +41,7 @@ public class VideoGameController {
         Optional<VideoGame> game = videoGameRepository.findById(gameId);
 
         if (game.isPresent()) {
-            VideoGameDto videoGameDto = convertToDto(game.get());
+            VideoGameDto videoGameDto = videoGameDtoMapper.convertToDto(game.get());
             return new ResponseEntity<>(videoGameDto, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
@@ -56,7 +50,7 @@ public class VideoGameController {
 
     @PostMapping
     public ResponseEntity saveNewVideoGame(@Valid @RequestBody VideoGameDto videoGameDto) {
-        VideoGame entity = convertToEntity(videoGameDto);
+        VideoGame entity = videoGameDtoMapper.convertToEntity(videoGameDto);
         videoGameRepository.save(entity);
         HttpHeaders responseHeaders = new HttpHeaders();
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(entity.getId()).toUri();
@@ -70,7 +64,7 @@ public class VideoGameController {
 
         if (game.isPresent()) {
             videoGameDto.setId(gameId);
-            VideoGame videoGame = convertToEntity(videoGameDto);
+            VideoGame videoGame = videoGameDtoMapper.convertToEntity(videoGameDto);
             videoGameRepository.save(videoGame);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
