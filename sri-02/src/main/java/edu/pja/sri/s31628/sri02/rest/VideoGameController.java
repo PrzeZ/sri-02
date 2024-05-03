@@ -25,7 +25,6 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/games")
 public class VideoGameController {
     private final VideoGameRepository videoGameRepository;
-    private final ModelMapper modelMapper;
     private final VideoGameDtoMapper videoGameDtoMapper;
 
     @GetMapping

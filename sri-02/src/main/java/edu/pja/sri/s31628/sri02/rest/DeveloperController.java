@@ -32,7 +32,6 @@ public class DeveloperController {
     private final DeveloperRepository developerRepository;
     private final DeveloperDtoMapper developerDtoMapper;
     private final VideoGameRepository videoGameRepository;
-    private final ModelMapper modelMapper;
     private final VideoGameDtoMapper videoGameDtoMapper;
 
 

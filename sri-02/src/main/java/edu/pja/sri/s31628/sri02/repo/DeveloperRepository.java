@@ -13,5 +13,5 @@ import java.util.Optional;
 public interface DeveloperRepository extends CrudRepository<Developer, Long> {
     List<Developer> findAll();
     @Query("from Developer as dev left join fetch dev.videoGames where dev.id=:developerId")
-    Optional<Developer> getDevelopereDetailsById(@Param("developerId") Long developerId);
+    Optional<Developer> getDeveloperDetailsById(@Param("developerId") Long developerId);
 }
