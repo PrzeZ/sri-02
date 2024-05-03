@@ -41,6 +41,10 @@ public class DeveloperController {
     public ResponseEntity<Collection<DeveloperDto>> getAllDevelopers() {
         List<Developer> developers = developerRepository.findAll();
         List<DeveloperDto> result = developers.stream().map(developerDtoMapper::convertToDto).collect(Collectors.toList());
+        for (DeveloperDto developerDto : result) {
+            developerDto.add(CreateDeveloperLinkSelf(developerDto.getId()));
+            developerDto.add(CreateDeveloperGamesLink(developerDto.getId()));
+        }
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
@@ -59,7 +63,7 @@ public class DeveloperController {
     }
 
     @GetMapping("/{developerId}/games")
-    public ResponseEntity<List<VideoGame>> getAllGamesByDeveloper(@PathVariable Long developerId) {
+    public ResponseEntity<List<VideoGame>> getDeveloperGamesById(@PathVariable Long developerId) {
         Optional<Developer> developerOptional = developerRepository.findById(developerId);
 
         if (!developerOptional.isPresent()) {
@@ -160,5 +164,9 @@ public class DeveloperController {
 
     private Link CreateDeveloperLinkSelf(Long developerId) {
         return linkTo(methodOn(DeveloperController.class).getDeveloperDetailsById(developerId)).withSelfRel();
+    }
+
+    private Link CreateDeveloperGamesLink(Long developerId) {
+        return linkTo(methodOn(DeveloperController.class).getDeveloperGamesById(developerId)).withSelfRel();
     }
 }

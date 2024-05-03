@@ -5,11 +5,12 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.hateoas.RepresentationModel;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DeveloperDto {
+public class DeveloperDto extends RepresentationModel {
     private Long id;
 
     @NotBlank
