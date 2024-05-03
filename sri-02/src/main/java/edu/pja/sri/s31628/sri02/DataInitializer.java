@@ -34,12 +34,17 @@ public class DataInitializer implements ApplicationRunner {
 
         VideoGame g3 = VideoGame.builder()
                 .title("TES:V Skyrim")
-                .releaseYear(2015)
+                .releaseYear(2011)
+                .build();
+
+        VideoGame g4 = VideoGame.builder()
+                .title("DOOM Eternal")
+                .releaseYear(2020)
                 .build();
 
         Developer d1 = Developer.builder()
                 .name("Toby Fox")
-                .description("Guy that made undertale")
+                .description("Guy that made Undertale")
                 .videoGames(new HashSet<>())
                 .build();
 
@@ -50,8 +55,8 @@ public class DataInitializer implements ApplicationRunner {
                 .build();
 
         Developer d3 = Developer.builder()
-                .name("Bethesda")
-                .description("")
+                .name("Bethesda game studios")
+                .description("American video game developer")
                 .videoGames(new HashSet<>())
                 .build();
 
@@ -66,7 +71,7 @@ public class DataInitializer implements ApplicationRunner {
         d3.getVideoGames().add(g3);
 
         developerRepository.saveAll(Arrays.asList(d1,d2,d3));
-        videoGameRepository.saveAll(Arrays.asList(g1,g2,g3));
+        videoGameRepository.saveAll(Arrays.asList(g1,g2,g3,g4));
 
 
     }
