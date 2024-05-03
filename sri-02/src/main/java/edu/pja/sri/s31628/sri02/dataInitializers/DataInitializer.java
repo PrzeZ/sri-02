@@ -41,6 +41,11 @@ public class DataInitializer implements ApplicationRunner {
                 .releaseYear(2020)
                 .build();
 
+        VideoGame g5 = VideoGame.builder()
+                .title("Cyberpunk 2077")
+                .releaseYear(2020)
+                .build();
+
         Developer d1 = Developer.builder()
                 .name("Toby Fox")
                 .description("Guy that made Undertale")
@@ -69,7 +74,13 @@ public class DataInitializer implements ApplicationRunner {
         g3.setDeveloper(d3);
         d3.getVideoGames().add(g3);
 
+        g4.setDeveloper(d3);
+        d3.getVideoGames().add(g4);
+
+        g5.setDeveloper(d2);
+        d2.getVideoGames().add(g5);
+
         developerRepository.saveAll(Arrays.asList(d1,d2,d3));
-        videoGameRepository.saveAll(Arrays.asList(g1,g2,g3,g4));
+        videoGameRepository.saveAll(Arrays.asList(g1,g2,g3,g4,g5));
     }
 }
