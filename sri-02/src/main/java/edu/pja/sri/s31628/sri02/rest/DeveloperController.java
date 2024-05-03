@@ -5,6 +5,7 @@ import edu.pja.sri.s31628.sri02.model.Developer;
 import edu.pja.sri.s31628.sri02.model.VideoGame;
 import edu.pja.sri.s31628.sri02.repo.DeveloperRepository;
 import edu.pja.sri.s31628.sri02.repo.VideoGameRepository;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpHeaders;
@@ -68,21 +69,21 @@ public class DeveloperController {
         }
 
         Developer developer = developerOptional.get();
-        List<VideoGame> games = new ArrayList<>(developer.getVideoGames()); // Assuming getVideoGames() returns a collection of VideoGame
+        List<VideoGame> games = new ArrayList<>(developer.getVideoGames());
 
         if (games.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT); // Returns 204 if no games are associated with the developer
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
 
         List<VideoGameDto> gamesDto = games.stream()
                 .map(videoGameDtoMapper::convertToDto)
                 .collect(Collectors.toList());
 
-        return new ResponseEntity<>(gamesDto, HttpStatus.OK); // Returns 200 with the games
+        return new ResponseEntity<>(gamesDto, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity saveNewDeveloper(@RequestBody DeveloperDto developerDto) {
+    public ResponseEntity saveNewDeveloper(@Valid @RequestBody DeveloperDto developerDto) {
         Developer entity = developerDtoMapper.convertToEntity(developerDto);
         developerRepository.save(entity);
         HttpHeaders responseHeaders = new HttpHeaders();
@@ -92,7 +93,7 @@ public class DeveloperController {
     }
 
     @PutMapping("{developerId}")
-    public ResponseEntity updateDeveloper(@PathVariable Long developerId, @RequestBody DeveloperDto developerDto){
+    public ResponseEntity updateDeveloper(@PathVariable Long developerId, @Valid @RequestBody DeveloperDto developerDto){
         Optional<Developer> dev = developerRepository.findById(developerId);
 
         if (dev.isPresent()) {
