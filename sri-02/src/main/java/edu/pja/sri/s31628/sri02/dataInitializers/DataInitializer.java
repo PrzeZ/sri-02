@@ -72,7 +72,5 @@ public class DataInitializer implements ApplicationRunner {
 
         developerRepository.saveAll(Arrays.asList(d1,d2,d3));
         videoGameRepository.saveAll(Arrays.asList(g1,g2,g3,g4));
-
-
     }
 }

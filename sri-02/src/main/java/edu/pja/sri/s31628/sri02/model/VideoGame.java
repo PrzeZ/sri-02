@@ -26,5 +26,4 @@ public class VideoGame {
     private Developer developer;
 
     private int releaseYear;
-
 }

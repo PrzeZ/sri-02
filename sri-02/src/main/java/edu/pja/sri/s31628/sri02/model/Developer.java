@@ -28,6 +28,4 @@ public class Developer {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Set<VideoGame> videoGames = new HashSet<>();
-
-
 }

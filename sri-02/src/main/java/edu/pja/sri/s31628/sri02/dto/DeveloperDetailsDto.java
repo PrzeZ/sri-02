@@ -18,5 +18,4 @@ public class DeveloperDetailsDto extends RepresentationModel {
     private String description;
 
     private Set<VideoGameDto> videoGames;
-
 }
