@@ -18,6 +18,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -44,7 +45,7 @@ public class DeveloperController {
     }
 
     @GetMapping("{developerId}")
-    public ResponseEntity<DeveloperDetailsDto> getDeveloperById(@PathVariable long developerId) {
+    public ResponseEntity<DeveloperDetailsDto> getDeveloperDetailsById(@PathVariable long developerId) {
         Optional<Developer> dev = developerRepository.findById(developerId);
         
         if (dev.isPresent()) {
@@ -55,6 +56,24 @@ public class DeveloperController {
         } else {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping("/{developerId}/games")
+    public ResponseEntity<List<VideoGame>> getAllGamesByDeveloper(@PathVariable Long developerId) {
+        Optional<Developer> developerOptional = developerRepository.findById(developerId);
+
+        if (!developerOptional.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // Returns 404 if the developer does not exist
+        }
+
+        Developer developer = developerOptional.get();
+        List<VideoGame> games = new ArrayList<>(developer.getVideoGames()); // Assuming getVideoGames() returns a collection of VideoGame
+
+        if (games.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT); // Returns 204 if no games are associated with the developer
+        }
+
+        return new ResponseEntity<>(games, HttpStatus.OK); // Returns 200 with the games
     }
 
     @PostMapping
@@ -140,6 +159,6 @@ public class DeveloperController {
     }
 
     private Link CreateDeveloperLinkSelf(Long developerId) {
-        return linkTo(methodOn(DeveloperController.class).getDeveloperById(developerId)).withSelfRel();
+        return linkTo(methodOn(DeveloperController.class).getDeveloperDetailsById(developerId)).withSelfRel();
     }
 }
