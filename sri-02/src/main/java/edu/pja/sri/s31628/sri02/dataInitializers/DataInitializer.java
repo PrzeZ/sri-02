@@ -4,6 +4,7 @@ import edu.pja.sri.s31628.sri02.model.Developer;
 import edu.pja.sri.s31628.sri02.model.VideoGame;
 import edu.pja.sri.s31628.sri02.repo.DeveloperRepository;
 import edu.pja.sri.s31628.sri02.repo.VideoGameRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
@@ -11,15 +12,13 @@ import org.springframework.stereotype.Component;
 import java.util.Arrays;
 import java.util.HashSet;
 
+@RequiredArgsConstructor
 @Component
 public class DataInitializer implements ApplicationRunner {
 
-    private DeveloperRepository developerRepository;
-    private VideoGameRepository videoGameRepository;
-    public DataInitializer(DeveloperRepository developerRepository, VideoGameRepository videoGameRepository) {
-        this.developerRepository = developerRepository;
-        this.videoGameRepository = videoGameRepository;
-    }
+    private final DeveloperRepository developerRepository;
+    private final VideoGameRepository videoGameRepository;
+
     @Override
     public void run(ApplicationArguments args) throws Exception {
         VideoGame g1 = VideoGame.builder()
